@@ -24,15 +24,23 @@ class Weather():
         return [t_max,t_min]
         
     def weather_3(self):
-        pass
+        #weather.com (google)
+        fahrenheit=lambda x:(x-32)*(5/9)
+        link="https://weather.com/weather/monthly/l/GMXX0025:1:GM"
+        page_response=requests.get(link,timeout=30)
+        page_content = bs4(page_response.content, "html.parser")
+        main_container=page_content.find("section",{"class":"today-historical"})
+        t_max=main_container.find("td",{"class":"col-high"}).find("span").text
+        t_min=main_container.find("td",{"class":"col-low"}).find("span").text
+        return [fahrenheit(int(t_max)),fahrenheit(int(t_min))]
         
     def weather_4(self):
         pass
         
     def __init__(self):
         self.link1=self.weather_1() 
-        self.link2=self.weather_2()
-        print(self.link1)
-        print(self.link2)
+        self.link2=self.weather_2()        
+        self.link3=self.weather_3()
+        
         
 wetter_dresden=Weather()
