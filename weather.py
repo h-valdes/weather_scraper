@@ -61,6 +61,16 @@ class Weather():
         t_min=round(fahrenheit(int(t_min)))
         self.print_temperature("Weather.com",t_max,t_min)
         return [t_max,t_min]
+    
+    def weather_4(self):
+        #worldweatheronline.com
+        link="https://www.worldweatheronline.com/dresden-weather/sachsen/de.aspx?day=0"
+        page_content=self.site(link)
+        main_container=page_content.find("div",{"class":"col-md-9 col-sm-8"})
+        t_max=int(main_container.find("div",{"class":"max_temp"}).find("div").text.split("°")[0])
+        t_min=int(main_container.find("div",{"class":"min_temp"}).find("div").text.split("°")[0])
+        self.print_temperature("Worldweatheronline.com",t_max,t_min)
+        return [t_max,t_min]
         
     def __init__(self):
         self.date=strftime("%d"+"."+"%m"+"."+"%y")
@@ -68,6 +78,6 @@ class Weather():
         self.values.append(self.weather_1())
         self.values.append(self.weather_2())
         self.values.append(self.weather_3())
+        self.values.append(self.weather_4())
         self.average_temperature=self.avg(self.values)
-        
 wetter_dresden=Weather()
