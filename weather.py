@@ -1,15 +1,32 @@
 from bs4 import BeautifulSoup as bs4
 import requests
+from time import localtime, strftime
 
 class Weather():
+
     def site(self, link):
         page_response = requests.get(link, timeout=50)
         return bs4(page_response.content, "html.parser")
+        
     def print_temperature(self, website, t_max,t_min):
-        print(website+" --> Dresden: \n")
-        print("T. Max: "+str(t_max))
-        print("\nT. Min: "+str(t_min))
-        print("-------------------------------------")    
+        print("\n"+website+" --> Dresden: "+self.date+  "\n")
+        print("T. Max: "+str(t_max)+"\n")
+        print("T. Min: "+str(t_min)+"\n")
+        print("-"*40) 
+        
+    def avg(self, values):
+        t_max_avg=0
+        t_min_avg=0
+        for i,j in values:
+            t_max_avg+=i
+            t_min_avg+=j
+        t_max_avg=round(t_max_avg/len(values))
+        t_min_avg=round(t_min_avg/len(values))
+        print("\n"+"Average Temperature in Dresden "+self.date+"\n")
+        print("T. Max.: "+ str(t_max_avg)+"\n")
+        print("T. Min.: "+ str(t_min_avg)+"\n")
+        print("-"*40)
+        return [t_max_avg,t_min_avg]      
         
     def weather_1(self):
         #wetter.com
@@ -46,7 +63,11 @@ class Weather():
         return [t_max,t_min]
         
     def __init__(self):
-        self.link1=self.weather_1() 
-        self.link2=self.weather_2()        
-        self.link3=self.weather_3()
+        self.date=strftime("%d"+"."+"%m"+"."+"%y")
+        self.values=list()
+        self.values.append(self.weather_1())
+        self.values.append(self.weather_2())
+        self.values.append(self.weather_3())
+        self.average_temperature=self.avg(self.values)
+        
 wetter_dresden=Weather()
