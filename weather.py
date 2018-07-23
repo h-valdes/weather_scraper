@@ -37,7 +37,10 @@ class Weather():
             std_t_min+=(j-self.average[1])**2
         std_t_max=round(sqrt(std_t_max/len(self.values)),2)
         std_t_min=round(sqrt(std_t_min/len(self.values)),2) 
-        print(str(std_t_max)+" "+str(std_t_min))      
+        print("\n"+"Standard Deviation for: \n")
+        print("T. Max.: "+ str(std_t_max)+"\n")
+        print("T. Min.: "+ str(std_t_min)+"\n")
+        print("-"*50)     
         return [std_t_max,std_t_min]
         
     def weather_1(self):
@@ -83,7 +86,8 @@ class Weather():
             self.print_temperature("Weather.com",t_max,t_min)
             self.values.append([t_max,t_min])
         except:
-            print("Error in connection with weather.com")
+            print("Error in connection with weather.com \n")
+            print("-"*50) 
             pass
     
     def weather_4(self):
