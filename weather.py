@@ -12,7 +12,7 @@ class Weather():
         print("\n"+website+" --> Dresden: "+self.date+  "\n")
         print("T. Max: "+str(t_max)+"\n")
         print("T. Min: "+str(t_min)+"\n")
-        print("-"*40) 
+        print("-"*50) 
         
     def avg(self, values):
         t_max_avg=0
@@ -20,12 +20,12 @@ class Weather():
         for i,j in values:
             t_max_avg+=i
             t_min_avg+=j
-        t_max_avg=round(t_max_avg/len(values))
-        t_min_avg=round(t_min_avg/len(values))
+        t_max_avg=round(t_max_avg/len(values),2)
+        t_min_avg=round(t_min_avg/len(values),2)
         print("\n"+"Average Temperature in Dresden "+self.date+"\n")
         print("T. Max.: "+ str(t_max_avg)+"\n")
         print("T. Min.: "+ str(t_min_avg)+"\n")
-        print("-"*40)
+        print("-"*50)
         return [t_max_avg,t_min_avg]      
         
     def weather_1(self):
@@ -52,11 +52,11 @@ class Weather():
     def weather_3(self):
         #weather.com (google)
         fahrenheit=lambda x:(x-32)*(5/9)
-        link="https://weather.com/weather/monthly/l/GMXX0025:1:GM"
+        link="https://weather.com/weather/today/l/GMXX0025:1:GM"
         page_content = self.site(link)
-        main_container=page_content.find("section",{"class":"today-historical"})
-        t_max=main_container.find("td",{"class":"col-high"}).find("span").text
-        t_min=main_container.find("td",{"class":"col-low"}).find("span").text
+        main_container=page_content.find("div",{"class":"today_nowcard-hilo"}).find_all("span",{"class":"deg-hilo-nowcard"})
+        t_max=main_container[0].text.split("°")[0]
+        t_min=main_container[1].text.split("°")[0]
         t_max=round(fahrenheit(int(t_max)))
         t_min=round(fahrenheit(int(t_min)))
         self.print_temperature("Weather.com",t_max,t_min)
